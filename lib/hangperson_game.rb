@@ -5,36 +5,36 @@ class HangpersonGame
   attr_accessor :word, :guesses, :wrong_guesses
 
   # Get a word from remote "random word" service
-
-  # def initialize()
-  # end
-  
   def initialize(word)
     @word = word
     @guesses = ''
     @wrong_guesses = ''
   end
   
-  #guess, which processes a guess and modifies the instance variables wrong_guesses and guesses accordingly
-
+  #Process a guess and modify the instance variables wrong_guesses and guesses accordingly
   def guess(char)
     
     #Check if letter guessed is nil or empty or not a letter and throw error
-    if char.nil? || char == "" || char =~ /[^A-Za-z]/
+    if char.nil? || char == "" || char !~ /[[:alpha:]]/
       raise ArgumentError
     end
     
-    #Why doesn't it work with !!?
+    #Convert character to downcase to make it case insensitive.
     #Check if letter has already been guessed in correct or wrong guess buckets
-    if @guesses.upcase.include? char.upcase or @wrong_guesses.upcase.include? char.upcase
+    char = char.downcase
+    if @guesses.include? char 
+      return false
+    elsif @wrong_guesses.include? char
       return false
     end
     
-    #Check if word contains letter. If yes, incremenet guesses by 1. If not, increment wrong guesses by 1.
+    #Check if word contains letter. If yes, increment guesses by 1. If not, increment wrong guesses by 1.
     if @word.include? char
       @guesses += char
+      return true
     else
       @wrong_guesses += char
+      return true
     end
 
   end
@@ -44,24 +44,20 @@ class HangpersonGame
 	  @word.gsub(/[^ #{@guesses}]/, '-')
   end
   
-  #Check whether wrong guesses is 7 or more, which means game over. If word is guessed
+  #Check whether wrong guesses is 7 or more - If so, game over. If word is guessed
   #in under 7 guesses, you win! If not, keep playing. 
   def check_win_or_lose
     
-    if @wrong_guesses.length >= 7
-      return :lose
-    end
-    
     if word_with_guesses == @word
       return :win
+    elsif @wrong_guesses.length >= 7 
+      return :lose
+    else  
+      return :play
     end
-    
-    :play
-    
+  
   end   
       
-  
-
 
   # You can test it by running $ bundle exec irb -I. -r app.rb
   # And then in the irb: irb(main):001:0> HangpersonGame.get_random_word
