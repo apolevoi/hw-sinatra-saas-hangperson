@@ -47,7 +47,7 @@ class HangpersonApp < Sinatra::Base
     elsif @game.guess(letter) == false
       flash[:message] = "You have already used that letter."
       redirect '/show'
-    else
+    elsif letter == nil or !letter.match(/[a-zA-Z]/) 
       flash[:message] = "Invalid guess."
       redirect '/show'
     end
