@@ -15,7 +15,11 @@ class HangpersonGame
   def guess(char)
     
     #Check if letter guessed is nil or empty or not a letter and throw error
-    if char.nil? || char == "" || char !~ /[[:alpha:]]/
+    if char == nil 
+      raise ArgumentError
+    elsif char == ""
+      raise ArgumentError
+    elsif !char.match(/[A-Za-z]/)
       raise ArgumentError
     end
     
