@@ -7,8 +7,8 @@ class HangpersonGame
   # Get a word from remote "random word" service
   def initialize(word)
     @word = word
-    @guesses = ''
-    @wrong_guesses = ''
+    @guesses = ""
+    @wrong_guesses = ""
   end
   
   #Process a guess and modify the instance variables wrong_guesses and guesses accordingly
